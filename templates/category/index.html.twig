@@ -6,4 +6,8 @@
 
 {% block body %}
     <h1>{{ category }}</h1>
+
+    <h2>Derniers articles de la catégorie</h2>
+
+    {% include 'article/_list.html.twig' with {'articles': articles} only %}
 {% endblock %}

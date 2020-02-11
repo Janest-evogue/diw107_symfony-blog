@@ -29,6 +29,10 @@
                        class="btn btn-primary">
                         Modifier
                     </a>
+                    <a href="{{ path('app_admin_article_delete', {'id': article.id}) }}"
+                       class="btn btn-danger">
+                        Supprimer
+                    </a>
                 </td>
             </tr>
         {% else %}

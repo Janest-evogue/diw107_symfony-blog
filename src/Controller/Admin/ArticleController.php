@@ -30,6 +30,12 @@ class ArticleController extends AbstractController
     {
         $articles = $repository->findBy([], ['publicationDate' => 'DESC']);
 
+        /*
+         * Ajouter une colonne avec le nombre de commentaires
+         * qui soit un lien cliquable vers une page qui liste les commentaires
+         * de l'article avec la possibilité de les supprimer
+         */
+
         return $this->render(
             'admin/article/index.html.twig',
             ['articles' => $articles]
@@ -127,5 +133,24 @@ class ArticleController extends AbstractController
                 'original_image' => $originalImage
             ]
         );
+    }
+
+    /**
+     * @Route("/suppression/{id}")
+     */
+    public function delete(EntityManagerInterface $manager, Article $article)
+    {
+        // si l'article a une image, on la supprime
+        if (!is_null($article->getImage())) {
+            $file = $this->getParameter('upload_dir') . $article->getImage();
+            unlink($file);
+        }
+
+        $manager->remove($article);
+        $manager->flush();
+
+        $this->addFlash('success', "L'article est supprimé");
+
+        return $this->redirectToRoute('app_admin_article_index');
     }
 }
